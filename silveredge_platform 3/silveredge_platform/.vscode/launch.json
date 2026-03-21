@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Backend (FastAPI)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--reload",
+                "--port", "8000"
+            ],
+            "cwd": "${workspaceFolder}/backend",
+            "jinja": true,
+            "preLaunchTask": "Start Backend"
+        },
+        {
+            "name": "Frontend (Vite)",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/frontend",
+            "preLaunchTask": "Start Frontend"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack (Backend + Frontend)",
+            "configurations": [
+                "Backend (FastAPI)",
+                "Frontend (Vite)"
+            ]
+        }
+    ]
+}
