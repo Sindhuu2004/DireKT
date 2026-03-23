@@ -22,14 +22,23 @@
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/frontend",
             "preLaunchTask": "Start Frontend"
+        },
+        {
+            "name": "Trading System (MCX Silver)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "silver_trading_system.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
         }
     ],
     "compounds": [
         {
-            "name": "Full Stack (Backend + Frontend)",
+            "name": "Full Stack (Backend + Frontend + Trading System)",
             "configurations": [
                 "Backend (FastAPI)",
-                "Frontend (Vite)"
+                "Frontend (Vite)",
+                "Trading System (MCX Silver)"
             ]
         }
     ]
