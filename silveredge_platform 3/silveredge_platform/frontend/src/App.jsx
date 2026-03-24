@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef, createContext, useContext } from "react";
 
 // ─── API ────────────────────────────────────────────────────────────
-const API = "http://localhost:8000";
-const WS  = "ws://localhost:8000";
+const API = import.meta.env.VITE_API_URL ? (import.meta.env.VITE_API_URL.startsWith('http') ? import.meta.env.VITE_API_URL : `https://${import.meta.env.VITE_API_URL}`) : "http://localhost:8000";
+const WS  = import.meta.env.VITE_WS_URL ? (import.meta.env.VITE_WS_URL.startsWith('ws') ? import.meta.env.VITE_WS_URL : `wss://${import.meta.env.VITE_WS_URL}`) : "ws://localhost:8000";
 
 function apiFetch(path, opts = {}, token) {
   const headers = { "Content-Type": "application/json", ...(opts.headers || {}) };

@@ -1,0 +1,45 @@
+services:
+  # Backend FastAPI Service
+  - type: web
+    name: silveredge-backend
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    rootDir: "silveredge_platform 3/silveredge_platform/backend"
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: PAPER_TRADING
+        value: true
+      # Add other keys as placeholder since they require sensitive values
+      - key: ANGEL_ONE_API_KEY
+        sync: false
+      - key: ANGEL_ONE_CLIENT_ID
+        sync: false
+      - key: ANGEL_ONE_PASSWORD
+        sync: false
+      - key: ANGEL_ONE_TOTP_SECRET
+        sync: false
+
+  # Frontend Static Site
+  - type: static
+    name: silveredge-frontend
+    runtime: node
+    buildCommand: "npm install && npm run build"
+    publishDir: "dist"
+    rootDir: "silveredge_platform 3/silveredge_platform/frontend"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: silveredge-backend
+          type: web
+          property: host
+      - key: VITE_WS_URL
+        fromService:
+          name: silveredge-backend
+          type: web
+          property: host
