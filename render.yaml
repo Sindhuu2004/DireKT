@@ -5,7 +5,7 @@ services:
     runtime: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
-    rootDir: "silveredge_platform_3/silveredge_platform/backend"
+    rootDir: "backend"
     envVars:
       - key: PORT
         value: 10000
@@ -31,7 +31,7 @@ services:
     runtime: node
     buildCommand: "npm install && npm run build"
     publishDir: "dist"
-    rootDir: "silveredge_platform_3/silveredge_platform/frontend"
+    rootDir: "frontend"
     envVars:
       - key: VITE_API_URL
         fromService:
