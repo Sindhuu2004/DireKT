@@ -17,6 +17,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, AsyncGenerator
 
 import aiohttp, numpy as np, pandas as pd, pyotp, structlog
 from fastapi import FastAPI, HTTPException, Depends, WebSocket, WebSocketDisconnect, status
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -1361,6 +1362,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="MCX Silver Trading Platform", version="2.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"])
+
+# Mount frontend static files
+# This allows deploying both backend and frontend as a single service on Render
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+else:
+    logger.warning(f"Frontend dist directory not found at {frontend_dist}. UI will not be served.")
+
 
 # ── Pydantic schemas ─────────────────────
 

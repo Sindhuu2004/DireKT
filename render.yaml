@@ -43,3 +43,31 @@ services:
           name: silveredge-backend
           type: web
           property: host
+
+  # Unified Full Stack Service (Alternative to separate services)
+  - type: web
+    name: silveredge-fullstack
+    runtime: python
+    # This command installs backend deps and builds the frontend
+    buildCommand: "pip install -r backend/requirements.txt && cd frontend && npm install && npm run build"
+    # This command starts the backend which now serves the frontend files
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    rootDir: "."
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: SECRET_KEY
+        generateValue: true
+      - key: VITE_API_URL
+        value: "" # Empty means use same origin
+      - key: VITE_WS_URL
+        value: "" # Empty means use same origin
+      # Add your Angel One credentials here
+      - key: ANGEL_ONE_API_KEY
+        sync: false
+      - key: ANGEL_ONE_CLIENT_ID
+        sync: false
+      - key: ANGEL_ONE_PASSWORD
+        sync: false
+      - key: ANGEL_ONE_TOTP_SECRET
+        sync: false
