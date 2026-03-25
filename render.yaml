@@ -62,6 +62,8 @@ services:
         value: "" # Empty means use same origin
       - key: VITE_WS_URL
         value: "" # Empty means use same origin
+      - key: USE_MOCK_DATA
+        value: "true"
       # Add your Angel One credentials here
       - key: ANGEL_ONE_API_KEY
         sync: false
