@@ -1587,6 +1587,7 @@ async def start_mock_feed():
     
     # Continue with real-time mock data
     bar_counter = 0
+    shared_feed._connected = True  # Show as connected in UI
     while not shared_feed._shutdown:
         try:
             # Generate realistic price movement
@@ -1595,15 +1596,15 @@ async def start_mock_feed():
             
             # Create mock tick data
             mock_tick = {
-                "token": "234230",
+                "token": "464150",
                 "ltp": current_price,
                 "volume": random.randint(100, 1000),
                 "timestamp": datetime.utcnow().isoformat()
             }
             
             # Update shared feed with mock data
-            shared_feed._latest_ltps["234230"] = current_price
-            shared_feed._latest_ticks["234230"] = mock_tick
+            shared_feed._latest_ltps["464150"] = current_price
+            shared_feed._latest_ticks["464150"] = mock_tick
             
             # Build mock bars and trigger callbacks
             bar = shared_feed._bar_builder.update(current_price, random.randint(100, 1000), 0, datetime.utcnow())
