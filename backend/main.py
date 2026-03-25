@@ -1363,13 +1363,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="MCX Silver Trading Platform", version="2.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware,allow_origins=["*"],allow_methods=["*"],allow_headers=["*"])
 
-# Mount frontend static files
-# This allows deploying both backend and frontend as a single service on Render
-frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
-if os.path.exists(frontend_dist):
-    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
-else:
-    logger.warning(f"Frontend dist directory not found at {frontend_dist}. UI will not be served.")
+
 
 
 # ── Pydantic schemas ─────────────────────
@@ -1636,6 +1630,14 @@ async def start_mock_feed():
         except Exception as e:
             logger.error(f"Mock feed error: {e}")
             await asyncio.sleep(5)
+
+
+# Mount frontend static files LAST to avoid intercepting API routes
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+else:
+    logger.warning(f"Frontend dist directory not found at {frontend_dist}. UI will not be served.")
 
 
 if __name__=="__main__":
